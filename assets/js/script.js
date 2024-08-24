@@ -134,6 +134,44 @@ for (let i = 0; i < formInputs.length; i++) {
   });
 }
 
+//contact section
+
+const contactForm = document.getElementById("contactForm");
+  contactForm.addEventListener("submit", handleSubmit);
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    const formData = new FormData(contactForm);
+    const requestData = {
+        from: formData.get('email'), // Use the email field as the 'from' key
+        subject: formData.get('name'), // Use the name field as the 'subject' key
+        message: formData.get('message') // Use the message field as the 'message' key
+    };
+
+    try {
+        const response = await fetch('https://mailer-olive.vercel.app/api/mail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        });
+        console.log('Response:', response);
+        if (response.ok) {
+            alert('Message sent successfully!');
+            contactForm.reset();
+        } else {
+            throw new Error('Failed to send message');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to send message. Please try again later.');
+    }
+}
+
+
+
 
 
 // page navigation variables
@@ -157,3 +195,8 @@ for (let i = 0; i < navigationLinks.length; i++) {
 
   });
 }
+
+
+
+     
+
